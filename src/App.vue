@@ -47,13 +47,20 @@
             @close="handleClose"
             style="height:100%;"
         >
+          <el-menu-item index="0">
+            <el-icon><ChatDotSquare /></el-icon>
+            <span>聊天列表</span>
+          </el-menu-item>
           <el-sub-menu index="1">
             <template #title>
+              <RouterLink to="/about">
               <el-icon><UserFilled /></el-icon>
               <span>我的群组</span>
+              </RouterLink >
             </template>
+
             <el-menu-item-group title="联系人">
-              <el-menu-item index="1-1">联系人1</el-menu-item>
+              <el-menu-item index="1-1">好友1</el-menu-item>
               <el-menu-item index="1-2">联系人2</el-menu-item>
               <el-menu-item index="1-3">联系人3</el-menu-item>
             </el-menu-item-group>
@@ -68,16 +75,20 @@
 
           </el-sub-menu>
           <el-menu-item index="2">
+            <RouterLink to="/calendar">
             <el-icon><DocumentChecked /></el-icon>
             <span>日程规划</span>
+              </RouterLink >
           </el-menu-item>
           <el-menu-item index="3" disabled>
             <el-icon><document /></el-icon>
             <span>会议管理</span>
           </el-menu-item>
           <el-menu-item index="4">
+            <RouterLink to="/position">
             <el-icon><Place /></el-icon>
             <span>打卡签到</span>
+            </RouterLink >
           </el-menu-item>
           <el-menu-item index="5">
           <el-icon><Monitor /></el-icon>
@@ -112,6 +123,7 @@
       UserFilled,
       Location,
       Place,
+ChatDotSquare ,
     } from '@element-plus/icons-vue'
     const handleOpen = (key: string, keyPath: string[]) => {
       console.log(key, keyPath)
