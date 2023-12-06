@@ -5,6 +5,7 @@ import RegisterPage from "../pages/RegisterPage.vue";
 import LoginPage from "../pages/LoginPage.vue"
 
 import HelpView from '../views/HelpView.vue'
+import InitialView from '../views/InitialView.vue'
 import CalendarView from '../views/CalendarView.vue'
 import MeetingView from '../views/MeetingView.vue'
 import PositionView from '../views/PositionView.vue'
@@ -77,6 +78,11 @@ const router = createRouter({
           path: 'task',
           name: 'task',
           component:TaskView
+        },
+        {
+          path: '',
+          name: 'initial',
+          component:InitialView
         },
       ]
     }
