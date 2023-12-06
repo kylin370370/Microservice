@@ -91,8 +91,9 @@ p {
   display: flex;
   justify-content: flex-end; /* 水平方向靠右 */
   align-items: flex-start; /* 垂直方向靠上 */
+  gap: 30px; /* 设置卡片之间的间距为 30px */
   position: absolute;
-  top: 180px; /* 距离顶部 10px */
+  top: 240px; /* 距离顶部 10px */
   left: 30px; /* 距离右边 10px */
   transform: none; /* 移除 transform */
 }
@@ -101,21 +102,22 @@ p {
   width: 400px;
   height: 200px;
   border-radius: 10px;
+
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 16px;
+  font-size: 26px;
   font-weight: bold;
   opacity: 0.5;
 }
 
 .blue-card {
-  background-color: #0000ff; /* 深蓝色 */
+  background-color: #000066; /* 深蓝色 */
 }
 
 .green-card {
-  background-color: #008000; /* 深绿色 */
+  background-color: #007f80; /* 深绿色 */
 }
 </style>
 
