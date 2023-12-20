@@ -25,14 +25,28 @@
         <span></span>
         <span></span> Submit
       </a>
-      <div>
-        &nbsp
-      </div>
+
       <a  href="/register" >
         <span></span>
         <span></span>
         <span></span>
         <span></span> Register
+      </a>
+      &nbsp
+      <div>
+
+      </div>
+      <a href="/home">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span> 以A进入主页
+      </a>
+      <a href="/home">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span> 以B进入主页
       </a>
     </form>
   </div>

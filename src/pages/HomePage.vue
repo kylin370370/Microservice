@@ -24,7 +24,7 @@
       <div class="flex-grow" >
 
       </div>
-      <el-menu-item index="1" disabled>充值</el-menu-item>
+      <el-menu-item index="1" disabled>切换项目</el-menu-item>
       <el-menu-item index="2"><RouterLink to="/home">主页</RouterLink></el-menu-item>
       <el-menu-item index="3"><RouterLink to="/home/help">帮助</RouterLink></el-menu-item>
       <el-menu-item index="4">
@@ -116,6 +116,7 @@
 </template>
 
 <script lang="ts" setup>
+
 import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 
@@ -154,6 +155,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 }
 a{
   text-decoration: none;
+  font-size: 20px;
   color: white;
 }
 .flex-grow {

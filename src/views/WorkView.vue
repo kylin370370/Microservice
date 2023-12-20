@@ -1,11 +1,23 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <div>
+    <ul>
+      <li v-for="(emoji, key) in emojis" :key="key">
+        {{ key }} - <img :src="emoji" alt="emoji" />
+      </li>
+    </ul>
+  </div>
 </template>
 
-<style scoped>
+<script>
+import emojiJson from "../emoji.json";
 
-</style>
+export default {
+  name: 'EmojiPicker',
+  data() {
+    return {
+      emojis: emojiJson
+    };
+  }
+};
+</script>
+
