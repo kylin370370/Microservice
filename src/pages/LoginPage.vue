@@ -1,13 +1,4 @@
 <template>
-<!--  <div>-->
-<!--    <h1>Login Page</h1>-->
-<!--    <router-link to="/register">-->
-<!--      <button>Go to Register Page</button>-->
-<!--    </router-link>-->
-<!--    <router-link to="/home">-->
-<!--      <button>Go to Home Page</button>-->
-<!--    </router-link>-->
-<!--  </div>-->
   <div class="my-login-box">
     <h2>Login</h2>
     <form id="loginForm">
@@ -40,14 +31,9 @@
         <span></span>
         <span></span>
         <span></span>
-        <span></span> 以A进入主页
+        <span></span> 直接进入主页
       </a>
-      <a href="/home">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span> 以B进入主页
-      </a>
+
     </form>
   </div>
 

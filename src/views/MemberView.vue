@@ -1,49 +1,81 @@
 <template>
   <div>
-    <input type="text" v-model="inputText" placeholder="Type a message..." />
-    <button @click="toggleEmojiPanel">😀</button>
-
-    <div v-if="showEmojis" class="emoji-container">
-      <span v-for="(emoji, index) in emojis" :key="index" @click="addEmojiToInput(emoji)">
-        {{ emoji }}
+    <el-button type="primary" @click="showInvite = true">邀请新用户</el-button>
+    <el-dialog title="邀请新用户" :visible.sync="showInvite">
+      <el-form ref="inviteForm" :model="inviteInfo" :rules="rules">
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="inviteInfo.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话号码" prop="phone">
+          <el-input v-model="inviteInfo.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="inviteInfo.name"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showInvite = false">取消</el-button>
+        <el-button type="primary" @click="submitInvite">确定</el-button>
       </span>
-    </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import emojiData from "../emoji.json";
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      inputText: '',
-      showEmojis: false,
-      emojis: emojiData.data.split(',')
+      showInvite: false,
+      inviteInfo: {
+        email: '',
+        phone: '',
+        name: ''
+      },
+      rules: {
+        // 自定义验证规则
+        customRule: [
+          { validator: this.validateInvite, trigger: 'submit' }
+        ]
+      }
     };
   },
   methods: {
-    addEmojiToInput(emoji) {
-      this.inputText += emoji;
-      this.showEmojis = false; // 隐藏表情面板
+    submitInvite() {
+      this.$refs.inviteForm.validate((valid) => {
+        if (valid) {
+          this.sendInvite();
+        } else {
+          console.log('请至少填写邮箱、电话或姓名中的一项');
+          return false;
+        }
+      });
     },
-    toggleEmojiPanel() {
-      this.showEmojis = !this.showEmojis;
+    sendInvite() {
+      axios.post('/api/invite', this.inviteInfo)
+          .then(response => {
+            // 处理响应
+            console.log(response);
+            this.showInvite = false;
+            this.resetForm();
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    },
+    resetForm() {
+      this.inviteInfo.email = '';
+      this.inviteInfo.phone = '';
+      this.inviteInfo.name = '';
+    },
+    validateInvite(rule, value, callback) {
+      if (!this.inviteInfo.email && !this.inviteInfo.phone && !this.inviteInfo.name) {
+        callback(new Error('请至少填写邮箱、电话或姓名中的一项'));
+      } else {
+        callback();
+      }
     }
   }
 };
 </script>
-
-<style>
-.emoji-container {
-  border: 1px solid #ccc;
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.emoji-container span {
-  cursor: pointer;
-  margin: 5px;
-}
-</style>

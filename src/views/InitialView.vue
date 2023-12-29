@@ -27,18 +27,18 @@
 
 <script>
 import * as THREE from "three";
-import GLOBE from "vanta/src/vanta.globe";
+import FOG from "vanta/src/vanta.fog";
 
 export default {
   data() {
     return {};
   },
   mounted() {
-    this.vantaEffect = GLOBE({
+    this.vantaEffect = FOG({
       el: this.$refs.vantaRef,
       THREE: THREE,
     });
-    VANTA.GLOBE({
+    VANTA.FOG({
       el: this.$refs.vantaRef,
       /*以下为样式配置*/
       mouseControls: true,
@@ -46,10 +46,10 @@ export default {
       gyroControls: false,
       minHeight: 200.00,
       minWidth: 200.00,
-      scale: 1.00,
-      scaleMobile: 1.00,
-      color: 0x91aae3,
-      backgroundColor: 0xf4f1f9,
+      highlightColor: 0x13223f,
+      midtoneColor: 0x442e2b,
+      lowlightColor: 0x619a91,
+      baseColor: 0x716077
     });
   },
   beforeDestroy() {

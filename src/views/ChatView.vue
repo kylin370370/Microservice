@@ -32,8 +32,8 @@
     <div class="chat-container">
 
         <div class="message-history">
-          <div v-for="msg in currentChatHistory" :key="msg.timestamp" class="message" :class="{ 'sent': msg.sender === userId, 'received': msg.sender !== userId }">
-            {{ msg.sender }}:<span class="timestamp">{{ new Date(msg.timestamp).toLocaleString() }}</span><br>
+          <div v-for="msg in currentChatHistory" :key="msg.timestamp" class="message" :class="{ 'sent': msg.senderId === userId, 'received': msg.senderId !== userId }">
+            {{ msg.senderId }}:<span class="timestamp">{{ new Date(msg.timestamp).toLocaleString() }}</span><br>
             <div class="message-content">
               <div class="message-metadata">
                 <!-- 使用符号来表示已读和未读 -->
@@ -62,6 +62,11 @@
         <el-button color="#626aef" :dark="isDark" @click="sendMessage">发送</el-button>
       </div>
   </div>
+    <div class="chat-user-info">
+      <h3>聊天者信息</h3>
+      <div>ID: {{ userId }}</div>
+      <!-- 这里可以添加更多聊天者的信息 -->
+    </div>
   </div>
 </template>
 <script>
@@ -112,7 +117,7 @@ export default {
     // this.socket.on('chatHistoryResponse', (data) => {
     //   this.currentChatHistory = data.map(msg => {
     //     return {
-    //       sender: msg.sender,
+    //       senderId: msg.senderId,
     //       message: msg.message,
     //       timestamp: msg.timestamp,
     //       isRead:msg.isRead,
@@ -124,7 +129,7 @@ export default {
   methods: {
     //加载聊天记录
     loadChatHistory(contactId) {
-      this.socket.emit('fetchChatHistory', { sender: this.userId, receiver: this.selectedId });
+      this.socket.emit('fetchChatHistory', { senderId: this.userId, receiverId: this.selectedId });
       this.updateRead(contactId);
     },
     //选择联系人
@@ -132,11 +137,10 @@ export default {
       this.selectedId = selectedId;
       console.log("Chat with:",selectedId);
       this.updateRead(selectedId);
-      //更新已读状态
-      // this.socket.emit('updateReadStatus', {
-      //   sender: selectedId,
-      //   receiver: this.userId
-      // });
+      this.socket.emit('updateReadStatus', {
+        senderId: selectedId,
+        receiverId: this.userId
+      });
 
       this.loadChatHistory(selectedId);
 
@@ -144,8 +148,8 @@ export default {
 
     updateRead(selectedId){
       this.socket.emit('updateReadStatus', {
-        sender: selectedId,
-        receiver: this.userId
+        senderId: selectedId,
+        receiverId: this.userId
       });
     },
     //发送信息
@@ -153,14 +157,14 @@ export default {
       const now = new Date();
       // 格式化时间戳，例如: '2023-03-15T14:20:00Z'
       const timestamp = now.toISOString();
-      console.log("Sending message:", { sender:this.userId,receiver: this.selectedId, message: this.message ,timestamp: timestamp,isRead: false});
-      this.socket.emit('messageEvent', { sender:this.userId,receiver: this.selectedId, message: this.message ,timestamp: timestamp,isRead: false});
+      console.log("Sending message:", { senderId:this.userId,receiverId: this.selectedId, message: this.message ,timestamp: timestamp,isRead: false});
+      this.socket.emit('messageEvent', { senderId:this.userId,receiverId: this.selectedId, message: this.message ,timestamp: timestamp,isRead: false});
       // this.socket.emit('simpleMessageEvent', 'Hello, world!');
 
 
       const newMessage = {
-        sender: this.userId,
-        receiver: this.selectedId,
+        senderId: this.userId,
+        receiverId: this.selectedId,
         message: this.message,
         timestamp: timestamp,
       };
@@ -177,14 +181,14 @@ export default {
     },
     initializeChat() {
       this.socket = io('http://localhost:9092');
-
+      // this.socket.emit('Authorize', this.userId);
       this.socket.on('messageEvent', (data) => {
         console.log('Message from server:', data);
-        if (data.receiver === this.userId) {
+        if (data.receiverId === this.userId) {
           // 如果是，调用 loadChatHistory 方法加载聊天记录
           // 假设 senderId 是从 data 中获取的发送者ID
-          const senderId = data.sender;
-          this.updateRead(senderId);
+          const senderId = data.senderId;
+          // this.updateRead(senderId);
           this.loadChatHistory(senderId);
         }
       });
@@ -207,7 +211,7 @@ export default {
       this.socket.on('chatHistoryResponse', (data) => {
         this.currentChatHistory = data.map(msg => {
           return {
-            sender: msg.sender,
+            senderId: msg.senderId,
             message: msg.message,
             timestamp: msg.timestamp,
             isRead: msg.isRead,
@@ -256,7 +260,7 @@ export default {
   background-color: #b2b2cc; /* 选中时的背景色 */
 }
 .chat-container {
-  flex-grow: 1; /* 如果您想让聊天区域占据剩余空间 */
+  flex-grow: 1; /* 让聊天区域占据剩余空间 */
   display: flex;
   flex-direction: column;
   width: 75%; /* 设置聊天容器的宽度 */
@@ -360,5 +364,12 @@ export default {
   cursor: pointer;
   margin: 5px;
 }
+.chat-user-info {
 
+  width: 250px; /* 调整宽度 */
+  padding: 5px;
+  border-right: 1px solid #ccc;
+  margin-right: 1px;
+  background-color: white; /* 设置背景色为白色 */
+}
 </style>
